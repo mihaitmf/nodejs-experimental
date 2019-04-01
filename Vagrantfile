@@ -7,7 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  required_plugins = %w(vagrant-vbguest)
+  required_plugins = %w(vagrant-vbguest vagrant-hostmanager)
 
   # Install plugins if missing
   plugins_to_install = required_plugins.select {|plugin| not Vagrant.has_plugin? plugin}
@@ -18,6 +18,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     else
       abort "Installation of one or more plugins has failed. Aborting."
     end
+  end
+
+  # Configure hosts
+  if Vagrant.has_plugin?('vagrant-hostmanager')
+    config.hostmanager.enabled = true
+    config.hostmanager.manage_host = true
+    config.hostmanager.manage_guest = true
+    config.hostmanager.ignore_private_ip = false
+    config.hostmanager.aliases = 'node-simple-rest-api.local'
   end
 
   # Set auto_update to false, if you do NOT want to check the correct additions version when booting VM's
