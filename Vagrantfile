@@ -53,6 +53,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     vm_config.vm.provision "docker"
 
-    vm_config.vm.provision "bootstrap", type: "shell", run: "once", path: "infra/local/provision.sh"
+    vm_config.vm.provision "bootstrap", type: "shell", run: "once", path: "infra/local/provisioning/provision.sh"
   end
 end
