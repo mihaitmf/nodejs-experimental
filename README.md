@@ -30,7 +30,7 @@ To run the server with the sources built in a docker image, run:
 - `express-server/infra/run.sh`
 
 To start the server with the sources mounted, run:
-- `infra/docker/run-npm.sh install express-server`
+- `infra/docker/run-npm.sh express-server install`
 - `infra/docker/run-node.sh express-server/express-server.js express-server 8080`
 
 To test the server from outside of the vagrant machine:
