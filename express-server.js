@@ -33,4 +33,8 @@ app.post('/', (req, res) => {
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
 
-// Test from exterior with: curl -d "name=john&age=29" -X POST -v 192.168.29.11:3000
+/**
+ * Test from exterior with:
+ * curl -d "name=john&age=29" -X POST -v 192.168.29.11:3000
+ * curl -v "192.168.29.11:8080?hello=world&aaa=123"
+ */
