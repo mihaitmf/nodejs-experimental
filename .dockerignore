@@ -1,0 +1,11 @@
+/.idea/
+/*.iml
+/*.log
+/.vagrant/
+/node_modules/
+/.git*
+/infra/
+/Vagrantfile
+/Dockerfile
+/.dockerignore
+
