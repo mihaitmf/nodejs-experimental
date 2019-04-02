@@ -5,6 +5,8 @@ Small and simple applications with the main purpose of learning node.js
 Create environment:
 `vagrant up`
 
+Vagrant machine IP: `192.168.29.11`
+
 Run node in docker with the local code mounted in the container:
 - `infra/docker/run-node.sh path/to/script.js [container-name exposed-port]`
 
