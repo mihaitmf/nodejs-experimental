@@ -49,4 +49,4 @@ server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-// Test with: curl -d "name=john&age=29" -X POST -v 192.168.29.11:3000
+// Test from exterior with: curl -d "name=john&age=29" -X POST -v 192.168.29.11:3000
