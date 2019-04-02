@@ -3,9 +3,18 @@
   "version": "1.0.0",
   "description": "Node.js on Docker",
   "author": "Mihai Tmf <mihai.tmf@gmail.com>",
+  "homepage": "https://github.com/mihaitmf/node-simple-rest-api#readme",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mihaitmf/node-simple-rest-api.git"
+  },
   "main": "express-server.js",
   "scripts": {
     "start": "node express-server.js"
+  },
+  "engines": {
+    "node": "10.15.3"
   },
   "dependencies": {
     "express": "^4.16.1"
