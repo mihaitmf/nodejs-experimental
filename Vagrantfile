@@ -1,9 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.require_version ">= 2.1"
+Vagrant.require_version '>= 2.1'
 
-VAGRANTFILE_API_VERSION = "2"
+VAGRANTFILE_API_VERSION = '2'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     if system "vagrant plugin install #{plugins_to_install.join(' ')}"
       exec "vagrant #{ARGV.join(' ')}"
     else
-      abort "Installation of one or more plugins has failed. Aborting."
+      abort 'Installation of one or more plugins has failed. Aborting.'
     end
   end
 
@@ -30,29 +30,29 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Set auto_update to false, if you do NOT want to check the correct additions version when booting VM's
-  if Vagrant.has_plugin?("vagrant-vbguest")
+  if Vagrant.has_plugin?('vagrant-vbguest')
     config.vbguest.auto_update = false
   end
 
-  config.vm.define "nodejs-experimental", primary: true do |vm_config|
-    vm_config.vm.box = "ubuntu/bionic64"
+  config.vm.define 'nodejs-experimental', primary: true do |vm_config|
+    vm_config.vm.box = 'ubuntu/bionic64'
     vm_config.vm.box_check_update = true
-    vm_config.vm.network "private_network", ip: "192.168.29.11"
-    vm_config.vm.provider "virtualbox" do |vb|
-      vb.name = "nodejs-experimental-VM"
+    vm_config.vm.network 'private_network', ip: '192.168.29.11'
+    vm_config.vm.provider 'virtualbox' do |vb|
+      vb.name = 'nodejs-experimental-VM'
       vb.cpus = 2
       vb.memory = 4096
     end
 
-    vm_config.vm.hostname = "nodejs-experimental"
+    vm_config.vm.hostname = 'nodejs-experimental'
 
     vm_config.ssh.insert_key = false
 
-    vm_config.vm.synced_folder ".", "/vagrant", disabled: true
-    vm_config.vm.synced_folder ".", "/var/nodejs-experimental", create: true
+    vm_config.vm.synced_folder '.', '/vagrant', disabled: true
+    vm_config.vm.synced_folder '.', '/var/nodejs-experimental', create: true
 
-    vm_config.vm.provision "docker"
+    vm_config.vm.provision 'docker'
 
-    vm_config.vm.provision "bootstrap", type: "shell", run: "once", path: "infra/provisioning/provision.sh"
+    vm_config.vm.provision 'bootstrap', type: 'shell', run: 'once', path: 'infra/provisioning/provision.sh'
   end
 end
