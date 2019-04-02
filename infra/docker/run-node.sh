@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+# example command: ./run-node.sh express-server/express-server.js express-server 8080
+
 IMAGE_NAME="node:10"
+
 EXEC_FILE="$1" # the first command line argument
 CONTAINER_NAME="${2:-"node-app"}" # the second command line argument if given, or default value
 HOST_PORT=${3:-8080} # the third command line argument if given, or default value
