@@ -1,7 +1,7 @@
 {
-  "name": "node_simple_rest_api",
+  "name": "node_express_server",
   "version": "1.0.0",
-  "description": "Node.js on Docker",
+  "description": "Simple Node.js Express web server on Docker",
   "author": "Mihai Tmf <mihai.tmf@gmail.com>",
   "homepage": "https://github.com/mihaitmf/node-simple-rest-api#readme",
   "license": "GPL-3.0-only",
