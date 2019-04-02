@@ -1,5 +1,5 @@
-# node-simple-rest-api
-Simple REST API created with Node.js, Express.js, MongoDB and Docker
+# Node.js experimental project
+Small and simple applications with the main purpose of learning node.js
 
 ## Quick start
 Create environment:

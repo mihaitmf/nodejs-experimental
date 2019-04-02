@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Simple Node.js Express web server on Docker",
   "author": "Mihai Tmf <mihai.tmf@gmail.com>",
-  "homepage": "https://github.com/mihaitmf/node-simple-rest-api#readme",
+  "homepage": "https://github.com/mihaitmf/nodejs-experimental#readme",
   "license": "GPL-3.0-only",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mihaitmf/node-simple-rest-api.git"
+    "url": "https://github.com/mihaitmf/nodejs-experimental.git"
   },
   "main": "express-server.js",
   "scripts": {

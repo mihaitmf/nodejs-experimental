@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.hostmanager.manage_host = true
     config.hostmanager.manage_guest = true
     config.hostmanager.ignore_private_ip = false
-    config.hostmanager.aliases = 'node-simple-rest-api.local'
+    config.hostmanager.aliases = 'nodejs-experimental.local'
   end
 
   # Set auto_update to false, if you do NOT want to check the correct additions version when booting VM's
@@ -34,22 +34,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vbguest.auto_update = false
   end
 
-  config.vm.define "node-simple-rest-api", primary: true do |vm_config|
+  config.vm.define "nodejs-experimental", primary: true do |vm_config|
     vm_config.vm.box = "ubuntu/bionic64"
     vm_config.vm.box_check_update = true
     vm_config.vm.network "private_network", ip: "192.168.29.11"
     vm_config.vm.provider "virtualbox" do |vb|
-      vb.name = "node-simple-rest-api-VM"
+      vb.name = "nodejs-experimental-VM"
       vb.cpus = 2
       vb.memory = 4096
     end
 
-    vm_config.vm.hostname = "node-simple-rest-api"
+    vm_config.vm.hostname = "nodejs-experimental"
 
     vm_config.ssh.insert_key = false
 
     vm_config.vm.synced_folder ".", "/vagrant", disabled: true
-    vm_config.vm.synced_folder ".", "/var/node-simple-rest-api", create: true
+    vm_config.vm.synced_folder ".", "/var/nodejs-experimental", create: true
 
     vm_config.vm.provision "docker"
 
