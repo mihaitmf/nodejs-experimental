@@ -1,5 +1,5 @@
 # Node.js experimental project
-Small and simple applications with the main purpose of learning node.js
+Collection of small and simple applications using Node.js, Express, Nodemon, Docker, with the main purpose of learning node.js
 
 ## Quick start
 Create environment:
