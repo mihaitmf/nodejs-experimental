@@ -1,0 +1,23 @@
+{
+  "name": "promises-example",
+  "version": "1.0.0",
+  "description": "Experiment with Promise interface",
+  "author": "Mihai Tmf <mihai.tmf@gmail.com>",
+  "homepage": "https://github.com/mihaitmf/nodejs-experimental#readme",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mihaitmf/nodejs-experimental.git"
+  },
+  "main": "promises.js",
+  "dependencies": {
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "10.15.3"
+  }
+}
