@@ -30,7 +30,7 @@ const errHandler = function (err) {
 function main() {
     const userDetailsUrl = 'https://api.github.com/users/mihaitmf';
 
-    console.log('--- Create promise');
+    console.log('--- Make async request that returns a promise');
     const userDetailsPromise = makeAsyncRequest(userDetailsUrl);
 
     // Get user details, after that get count of public repos and make another request to list repos from URL
@@ -39,8 +39,7 @@ function main() {
             const userDetails = JSON.parse(result);
 
             // Use user details from here
-            console.log('--- Fetched user details:');
-            console.log(userDetails);
+            console.log('--- Async request finished. Fetched user details:\n', userDetails);
 
             return userDetails;
 
@@ -53,14 +52,21 @@ function main() {
 
         }, errHandler)
         .then(function (userDetails) {
+            console.log('--- Make async request that returns a promise');
             const reposDetailsPromise = makeAsyncRequest(userDetails.repos_url).then(JSON.parse);
             return reposDetailsPromise
 
         }, errHandler)
         .then(function (reposDetails) {
-            console.log('--- Repos details result:');
-            console.log(reposDetails);
+            const truncatedReposDetails = JSON.stringify(reposDetails).substring(0, 256);
+            console.log('--- Async request finished. Fetched repos details:\n', truncatedReposDetails);
         }, errHandler);
+
+    for (let i = 0; i < 9; i++) {
+        setTimeout(() => {
+            console.log(`+++ Sync call after ${i / 4} sec`);
+        }, i * 250);
+    }
 }
 
 main();
