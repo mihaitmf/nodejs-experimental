@@ -1,48 +1,66 @@
 const request = require("request");
-let userDetails;
 
-function initialize() {
+function makeAsyncRequest(url) {
     // Setting URL and headers for request
     const options = {
-        url: 'https://api.github.com/users/mihaitmf',
+        url: url,
         headers: {
             'User-Agent': 'request'
         }
     };
+
     // Return new promise
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         // Do async job
-        console.log("Make request");
-        request.get(options, function(err, resp, body) {
+        console.log('--- Make actual request');
+        request.get(options, function (err, resp, body) {
             if (err) {
                 reject(err);
             } else {
-                resolve(JSON.parse(body));
+                resolve(body);
             }
         })
     })
 }
 
+const errHandler = function (err) {
+    console.log(`--- Error: ${err}`);
+};
+
 function main() {
-    console.log("Create promise");
-    const initializePromise = initialize();
+    const userDetailsUrl = 'https://api.github.com/users/mihaitmf';
 
-    initializePromise.then(function(result) {
-        userDetails = result;
-        console.log("Initialized user details");
+    console.log('--- Create promise');
+    const userDetailsPromise = makeAsyncRequest(userDetailsUrl);
 
-        // Use user details from here
-        console.log(userDetails);
+    // Get user details, after that get count of public repos and make another request to list repos from URL
+    userDetailsPromise
+        .then(function (result) {
+            const userDetails = JSON.parse(result);
 
-        return userDetails;
+            // Use user details from here
+            console.log('--- Fetched user details:');
+            console.log(userDetails);
 
-    }, function(err) {
-        console.log(`Error: ${err}`);
+            return userDetails;
 
-    }).then(function(result) {
-        const countRepos = result.public_gists + result.public_repos;
-        console.log(`Count public repos and gists: ${countRepos}`);
-    });
+        }, errHandler)
+        .then(function (userDetails) {
+            const countRepos = userDetails.public_gists + userDetails.public_repos;
+            console.log(`--- Count public repos and gists: ${countRepos}`);
+
+            return userDetails;
+
+        }, errHandler)
+        .then(function (userDetails) {
+            const reposDetailsPromise = makeAsyncRequest(userDetails.repos_url).then(JSON.parse);
+            return reposDetailsPromise
+
+        }, errHandler)
+        .then(function (reposDetails) {
+            console.log('--- Repos details result:');
+            console.log(reposDetails);
+        }, errHandler);
 }
 
 main();
