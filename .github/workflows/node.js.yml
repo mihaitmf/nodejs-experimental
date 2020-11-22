@@ -37,6 +37,7 @@ jobs:
       run: infra/run.sh
     - name: Express-Server test curl
       run: |
+        docker ps
         curl -v "localhost:8080?hello=world&aaa=123"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
@@ -44,47 +45,48 @@ jobs:
         docker rmi $(docker images -aq)
         docker rm -fv $(docker ps -aq)
 
-#  express-server-npm:
-#    name: Express-Server run locally with npm
-#    runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: $PROJECT_PATH_EXPRESS_SERVER
-#    strategy:
-#      matrix:
-#        node-version: [ 14.x, 10.x ]
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Use Node.js ${{ matrix.node-version }}
-#      uses: actions/setup-node@v1
-#      with:
-#        node-version: ${{ matrix.node-version }}
-#    - name: Cache npm node_modules
-#      id: npm-cache
-#      uses: actions/cache@v2
-#      with:
-#        path: ~/.npm
-#        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-#        restore-keys: |
-#          ${{ runner.os }}-node-
-#    - name: Express-Server install
-#      if: steps.npm-cache.outputs.cache-hit != 'true'
-#      run: npm ci
-#    - name: Express-Server run with npm
-#      run: npm run start
-#    - name: Express-Server test curl
-#      run: |
-#        curl -v "localhost:8080?hello=world&aaa=123"
-#        curl -d "name=john&age=29" -X POST -v localhost:8080
-#    - name: Clean up node_modules
-#      run: rm -r node_modules
+  express-server-npm:
+    name: Express-Server run locally with npm
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
+    strategy:
+      matrix:
+        node-version: [ 14.x, 10.x ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Cache npm node_modules
+      id: npm-cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Express-Server install
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: npm ci
+    - name: Express-Server run with npm
+      run: npm run start
+    - name: Express-Server test curl
+      run: |
+        docker ps
+        curl -v "localhost:8080?hello=world&aaa=123"
+        curl -d "name=john&age=29" -X POST -v localhost:8080
+    - name: Clean up node_modules
+      run: rm -r node_modules
 #
 #  http-server-node-from-system:
 #    name: Http-Server with Node from system
 #    runs-on: ubuntu-latest
 #    defaults:
 #      run:
-#        working-directory: $PROJECT_PATH_HTTP_SERVER
+#        working-directory: ${{ env.PROJECT_PATH_HTTP_SERVER }}
 #    strategy:
 #      matrix:
 #        node-version: [ 14.x, 10.x ]
@@ -106,7 +108,7 @@ jobs:
 #    runs-on: ubuntu-latest
 #    defaults:
 #      run:
-#        working-directory: $PROJECT_PATH_HTTP_SERVER
+#        working-directory: ${{ env.PROJECT_PATH_HTTP_SERVER }}
 #    steps:
 #    - uses: actions/checkout@v2
 #    - name: Http-Server run with Node from docker
@@ -121,7 +123,7 @@ jobs:
 #    runs-on: ubuntu-latest
 #    defaults:
 #      run:
-#        working-directory: $PROJECT_PATH_HTTP_SERVER
+#        working-directory: ${{ env.PROJECT_PATH_HTTP_SERVER }}
 #    steps:
 #    - uses: actions/checkout@v2
 #    - name: Http-Server run with Nodemon from docker
@@ -136,7 +138,7 @@ jobs:
 #    runs-on: ubuntu-latest
 #    defaults:
 #      run:
-#        working-directory: $PROJECT_PATH_PROMISES
+#        working-directory: ${{ env.PROJECT_PATH_PROMISES }}
 #    strategy:
 #      matrix:
 #        node-version: [ 14.x, 10.x ]
