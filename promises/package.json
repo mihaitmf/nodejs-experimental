@@ -13,7 +13,7 @@
     "node": ">=14"
   },
   "dependencies": {
-    "request": "^2"
+    "request": "^2.88.2"
   },
   "devDependencies": {},
   "main": "all-promises.js",
