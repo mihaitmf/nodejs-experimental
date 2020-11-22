@@ -30,9 +30,19 @@ jobs:
         working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
     steps:
     - uses: actions/checkout@v2
+    - name: Cache docker build
+      id: docker-cache
+      uses: actions/cache@v2
+      with:
+        path: docker-image.tar
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
     - name: Express-Server build
+      if: steps.docker-cache.outputs.cache-hit != 'true'
       run: |
         infra/build.sh
+        docker save --output docker-image.tar mihaitmf/node-express-service:latest
     - name: Express-Server run in docker container
       run: infra/run.sh
     - name: Express-Server test curl
@@ -76,8 +86,7 @@ jobs:
     - name: Express-Server run with npm
       run: |
         npm run start &
-        SERVER_PID=$!
-        echo $SERVER_PID >> $GITHUB_ENV
+        echo SERVER_PID=$! >> $GITHUB_ENV
     - name: Express-Server test curl
       run: |
         echo "\n--------- TEST GET ---------\n"
