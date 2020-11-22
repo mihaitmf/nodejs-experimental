@@ -1,0 +1,58 @@
+language: node_js
+
+node_js:
+  - 14
+
+env:
+  - PROJECT_PATH_EXPRESS_SERVER=express-server
+  - PROJECT_PATH_HTTP_SERVER=http-server
+  - PROJECT_PATH_PROMISES=promises
+
+stages:
+  - $PROJECT_PATH_EXPRESS_SERVER install
+  - $PROJECT_PATH_EXPRESS_SERVER build
+  - $PROJECT_PATH_EXPRESS_SERVER run container
+  - $PROJECT_PATH_EXPRESS_SERVER test
+  - clean up docker
+  - $PROJECT_PATH_EXPRESS_SERVER run npm
+  - $PROJECT_PATH_EXPRESS_SERVER test
+  - $PROJECT_PATH_HTTP_SERVER run
+  - $PROJECT_PATH_HTTP_SERVER test
+  - $PROJECT_PATH_PROMISES install
+  - $PROJECT_PATH_PROMISES test
+  - clean up node modules
+
+jobs:
+  include:
+    - stage: $PROJECT_PATH_EXPRESS_SERVER install
+      script: npm --prefix $PROJECT_PATH_EXPRESS_SERVER ci $PROJECT_PATH_EXPRESS_SERVER
+    - stage: $PROJECT_PATH_EXPRESS_SERVER build
+      script: $PROJECT_PATH_EXPRESS_SERVER/infra/build.sh
+    - stage: $PROJECT_PATH_EXPRESS_SERVER run container
+      script: $PROJECT_PATH_EXPRESS_SERVER/infra/run.sh
+    - stage: $PROJECT_PATH_EXPRESS_SERVER test
+      script:
+        - curl -v "localhost:8080?hello=world&aaa=123"
+        - curl -d "name=john&age=29" -X POST -v localhost:8080
+    - stage: $PROJECT_PATH_EXPRESS_SERVER run npm
+      script: npm --prefix $PROJECT_PATH_EXPRESS_SERVER run start
+    - stage: $PROJECT_PATH_HTTP_SERVER run
+      script: infra/docker/run-node.sh $PROJECT_PATH_HTTP_SERVER/http-server.js http-server 3000
+    - stage: $PROJECT_PATH_HTTP_SERVER test
+      script:
+        - curl -v "localhost:3000?hello=world&aaa=123"
+        - curl -d "name=john&age=29" -X POST -v localhost:3000
+    - stage: $PROJECT_PATH_PROMISES install
+      script: npm --prefix $PROJECT_PATH_PROMISES ci $PROJECT_PATH_PROMISES
+    - stage: $PROJECT_PATH_PROMISES test
+      script:
+        - npm --prefix $PROJECT_PATH_PROMISES run start
+        - npm --prefix $PROJECT_PATH_PROMISES run github-user-details
+    - stage: clean up docker
+      script:
+        - docker rmi $(docker images -aq)
+        - docker rm -fv $(docker ps -aq)
+    - stage: clean up node modules
+      script:
+        - rm -r $PROJECT_PATH_EXPRESS_SERVER/node_modules
+        - rm -r $PROJECT_PATH_EXPRESS_PROMISES/node_modules
