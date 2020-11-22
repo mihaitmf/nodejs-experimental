@@ -32,20 +32,17 @@ jobs:
     - uses: actions/checkout@v2
     - name: Express-Server build
       run: |
-        echo $PROJECT_PATH_EXPRESS_SERVER
-        echo $PWD
-        pwd
-#        ./infra/build.sh
-#    - name: Express-Server run in docker container
-#      run: infra/run.sh
-#    - name: Express-Server test curl
-#      run: |
-#        curl -v "localhost:8080?hello=world&aaa=123"
-#        curl -d "name=john&age=29" -X POST -v localhost:8080
-#    - name: Clean up docker
-#      run: |
-#        docker rmi $(docker images -aq)
-#        docker rm -fv $(docker ps -aq)
+        infra/build.sh
+    - name: Express-Server run in docker container
+      run: infra/run.sh
+    - name: Express-Server test curl
+      run: |
+        curl -v "localhost:8080?hello=world&aaa=123"
+        curl -d "name=john&age=29" -X POST -v localhost:8080
+    - name: Clean up docker
+      run: |
+        docker rmi $(docker images -aq)
+        docker rm -fv $(docker ps -aq)
 
 #  express-server-npm:
 #    name: Express-Server run locally with npm
