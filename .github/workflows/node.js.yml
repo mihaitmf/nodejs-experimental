@@ -38,6 +38,7 @@ jobs:
     - name: Express-Server test curl
       run: |
         docker ps
+        curl -v google.com
         curl -v "localhost:8080?hello=world&aaa=123"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
@@ -72,14 +73,17 @@ jobs:
       if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm ci
     - name: Express-Server run with npm
-      run: npm run start
+      run: |
+        npm run start &
+        SERVER_PID=$!
     - name: Express-Server test curl
       run: |
-        docker ps
         curl -v "localhost:8080?hello=world&aaa=123"
         curl -d "name=john&age=29" -X POST -v localhost:8080
-    - name: Clean up node_modules
-      run: rm -r node_modules
+    - name: Clean up
+      run: |
+        kill $SERVER_PID
+        rm -r node_modules
 #
 #  http-server-node-from-system:
 #    name: Http-Server with Node from system
