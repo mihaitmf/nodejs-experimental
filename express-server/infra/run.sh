@@ -5,7 +5,7 @@ CONTAINER_NAME="node-express-service"
 HOST_PORT=8080
 
 # stop and remove if exists
-(docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME}) > /dev/null 2>&1
+(docker rm -fv ${CONTAINER_NAME}) > /dev/null 2>&1
 
 # start container from scratch
 docker run -d \

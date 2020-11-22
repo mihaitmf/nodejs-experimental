@@ -14,7 +14,7 @@ HOST_WORK_DIR=$(realpath $(dirname $(readlink -f "$0"))/../..)
 CONTAINER_WORK_DIR=/usr/src/app
 
 # stop and remove if exists
-(docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME}) > /dev/null 2>&1
+(docker rm -fv ${CONTAINER_NAME}) > /dev/null 2>&1
 
 # start container from scratch
 docker run --detach \
