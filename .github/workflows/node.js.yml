@@ -39,7 +39,9 @@ jobs:
       run: |
         docker ps
         curl -v google.com
+        echo "--------- TEST GET ---------"
         curl -v "localhost:8080?hello=world&aaa=123"
+        echo "--------- TEST POST ---------"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
       run: |
@@ -76,12 +78,16 @@ jobs:
       run: |
         npm run start &
         SERVER_PID=$!
+        echo $SERVER_PID
     - name: Express-Server test curl
       run: |
+        echo "--------- TEST GET ---------"
         curl -v "localhost:8080?hello=world&aaa=123"
+        echo "--------- TEST POST ---------"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up
       run: |
+        echo $SERVER_PID
         kill $SERVER_PID
         rm -r node_modules
 #
