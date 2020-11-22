@@ -44,6 +44,10 @@ To start the server with the sources mounted, run:
 Run with nodemon:
 - `infra/docker/run-nodemon.sh express-server/express-server.js express-server 8080`
 
-To test the server from outside of the vagrant machine:
+To test the server running locally:
+- `curl -v "localhost:8080?hello=world&aaa=123"`
+- `curl -d "name=john&age=29" -X POST -v localhost:8080`
+
+To test the server running inside the vagrant machine:
 - `curl -v "192.168.29.11:8080?hello=world&aaa=123"`
 - `curl -d "name=john&age=29" -X POST -v 192.168.29.11:8080` 

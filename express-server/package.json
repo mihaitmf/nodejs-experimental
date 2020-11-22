@@ -1,5 +1,5 @@
 {
-  "name": "node_express_server",
+  "name": "node-express-server",
   "version": "1.0.0",
   "description": "Simple Node.js Express web server on Docker",
   "author": "Mihai Tmf <mihai.tmf@gmail.com>",
@@ -9,18 +9,18 @@
     "type": "git",
     "url": "https://github.com/mihaitmf/nodejs-experimental.git"
   },
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "express": "^4"
+  },
+  "devDependencies": {
+    "nodemon": "^2"
+  },
   "main": "express-server.js",
   "scripts": {
     "dev": "nodemon -L express-server.js",
     "start": "node express-server.js"
-  },
-  "engines": {
-    "node": "10.15.3"
-  },
-  "dependencies": {
-    "express": "^4.16.1"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.10"
   }
 }

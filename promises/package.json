@@ -9,15 +9,16 @@
     "type": "git",
     "url": "https://github.com/mihaitmf/nodejs-experimental.git"
   },
-  "main": "promises.js",
+  "engines": {
+    "node": ">=14"
+  },
   "dependencies": {
-    "request": "^2.88.0"
+    "request": "^2"
   },
   "devDependencies": {},
+  "main": "all-promises.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "engines": {
-    "node": "10.15.3"
+    "start": "node all-promises.js",
+    "github-user-details": "node github-user-details.js"
   }
 }

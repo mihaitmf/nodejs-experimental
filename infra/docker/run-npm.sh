@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE_NAME="node:10"
+IMAGE_NAME="node:14"
 
 PROJECT_DIR=$(realpath "$1")
 
