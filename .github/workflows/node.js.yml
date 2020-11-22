@@ -12,6 +12,10 @@ on:
     paths-ignore:
       - '**/*.md'
 
+defaults:
+  run:
+    shell: bash
+
 env:
   PROJECT_PATH_EXPRESS_SERVER: express-server
   PROJECT_PATH_HTTP_SERVER: http-server
