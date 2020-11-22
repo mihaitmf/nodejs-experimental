@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ PROJECT_PATH_EXPRESS_SERVER }}
+        working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
     steps:
     - uses: actions/checkout@v2
     - name: Express-Server build
