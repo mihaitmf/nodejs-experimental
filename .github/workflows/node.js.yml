@@ -12,10 +12,8 @@ on:
     paths-ignore:
       - '**/*.md'
 
-defaults:
-  runs-on: ubuntu-latest
-
 env:
+  OS: ubuntu-latest
   PROJECT_PATH_EXPRESS_SERVER: express-server
   PROJECT_PATH_HTTP_SERVER: http-server
   PROJECT_PATH_PROMISES: promises
@@ -23,6 +21,7 @@ env:
 jobs:
   checkout:
     name: Checkout
+    runs-on: $OS
     strategy:
       matrix:
         node-version: [14.x, 10.x]
