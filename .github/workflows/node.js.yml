@@ -38,11 +38,10 @@ jobs:
     - name: Express-Server test curl
       run: |
         docker ps
-        curl -v google.com
-        echo "--------- TEST GET ---------"
-        curl -v "localhost:8080?hello=world&aaa=123"
-        echo "--------- TEST POST ---------"
-        curl -d "name=john&age=29" -X POST -v localhost:8080
+        echo "\n--------- TEST GET ---------\n"
+        curl -v "0.0.0.0:8080?hello=world&aaa=123"
+        echo "\n--------- TEST POST ---------\n"
+        curl -d "name=john&age=29" -X POST -v node-express-service:8080
     - name: Clean up docker
       run: |
         docker rmi $(docker images -aq)
@@ -78,12 +77,12 @@ jobs:
       run: |
         npm run start &
         SERVER_PID=$!
-        echo $SERVER_PID
+        echo $SERVER_PID >> $GITHUB_ENV
     - name: Express-Server test curl
       run: |
-        echo "--------- TEST GET ---------"
+        echo "\n--------- TEST GET ---------\n"
         curl -v "localhost:8080?hello=world&aaa=123"
-        echo "--------- TEST POST ---------"
+        echo "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up
       run: |
