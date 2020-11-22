@@ -9,42 +9,42 @@ env:
   - PROJECT_PATH_PROMISES=promises
 
 stages:
-  - $PROJECT_PATH_EXPRESS_SERVER install
-  - $PROJECT_PATH_EXPRESS_SERVER build
-  - $PROJECT_PATH_EXPRESS_SERVER run container
-  - $PROJECT_PATH_EXPRESS_SERVER test
+  - express-server install
+  - express-server build
+  - express-server run container
+  - express-server test
   - clean up docker
-  - $PROJECT_PATH_EXPRESS_SERVER run npm
-  - $PROJECT_PATH_EXPRESS_SERVER test
-  - $PROJECT_PATH_HTTP_SERVER run
-  - $PROJECT_PATH_HTTP_SERVER test
-  - $PROJECT_PATH_PROMISES install
-  - $PROJECT_PATH_PROMISES test
+  - express-server run npm
+  - express-server test
+  - http-server run
+  - http-server test
+  - promises install
+  - promises test
   - clean up node modules
 
 jobs:
   include:
-    - stage: $PROJECT_PATH_EXPRESS_SERVER install
+    - stage: express-server install
       script: npm --prefix $PROJECT_PATH_EXPRESS_SERVER ci $PROJECT_PATH_EXPRESS_SERVER
-    - stage: $PROJECT_PATH_EXPRESS_SERVER build
+    - stage: express-server build
       script: $PROJECT_PATH_EXPRESS_SERVER/infra/build.sh
-    - stage: $PROJECT_PATH_EXPRESS_SERVER run container
+    - stage: express-server run container
       script: $PROJECT_PATH_EXPRESS_SERVER/infra/run.sh
-    - stage: $PROJECT_PATH_EXPRESS_SERVER test
+    - stage: express-server test
       script:
         - curl -v "localhost:8080?hello=world&aaa=123"
         - curl -d "name=john&age=29" -X POST -v localhost:8080
-    - stage: $PROJECT_PATH_EXPRESS_SERVER run npm
+    - stage: express-server run npm
       script: npm --prefix $PROJECT_PATH_EXPRESS_SERVER run start
-    - stage: $PROJECT_PATH_HTTP_SERVER run
+    - stage: http-server run
       script: infra/docker/run-node.sh $PROJECT_PATH_HTTP_SERVER/http-server.js http-server 3000
-    - stage: $PROJECT_PATH_HTTP_SERVER test
+    - stage: http-server test
       script:
         - curl -v "localhost:3000?hello=world&aaa=123"
         - curl -d "name=john&age=29" -X POST -v localhost:3000
-    - stage: $PROJECT_PATH_PROMISES install
+    - stage: promises install
       script: npm --prefix $PROJECT_PATH_PROMISES ci $PROJECT_PATH_PROMISES
-    - stage: $PROJECT_PATH_PROMISES test
+    - stage: promises test
       script:
         - npm --prefix $PROJECT_PATH_PROMISES run start
         - npm --prefix $PROJECT_PATH_PROMISES run github-user-details
