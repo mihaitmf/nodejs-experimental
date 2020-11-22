@@ -1,4 +1,6 @@
 # Node.js experimental project
+[![Travis Build Status](https://travis-ci.org/mihaitmf/nodejs-experimental.svg?branch=master)](https://travis-ci.org/mihaitmf/nodejs-experimental)
+
 Collection of small and simple applications using Node.js, Express, Nodemon, Docker, with the main purpose of learning node.js
 
 ## Quick start
