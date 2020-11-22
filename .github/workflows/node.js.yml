@@ -34,7 +34,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
   express-server-docker:
-    name: Express-Server Docker
+    name: Express-Server run in docker container
+    runs-on: $OS
     needs: checkout
     defaults:
       run:
@@ -66,7 +67,8 @@ jobs:
         rm -r node_modules
 
   express-server-npm:
-    name: Express-Server Npm
+    name: Express-Server run locally with npm
+    runs-on: $OS
     needs: checkout
     defaults:
       run:
@@ -94,6 +96,7 @@ jobs:
 
   http-server-node-from-system:
     name: Http-Server with Node from system
+    runs-on: $OS
     needs: checkout
     defaults:
       run:
@@ -108,6 +111,7 @@ jobs:
 
   http-server-node-from-docker:
     name: Http-Server with Node from docker
+    runs-on: $OS
     needs: checkout
     defaults:
       run:
@@ -122,6 +126,7 @@ jobs:
 
   http-server-nodemon-from-docker:
     name: Http-Server with Nodemon from docker
+    runs-on: $OS
     needs: checkout
     defaults:
       run:
@@ -136,6 +141,7 @@ jobs:
 
   promises:
     name: Promises
+    runs-on: $OS
     needs: checkout
     defaults:
       run:
