@@ -25,14 +25,14 @@ jobs:
   express-server-docker:
     name: Express-Server run in docker container
     runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: $PROJECT_PATH_EXPRESS_SERVER
+    defaults:
+      run:
+        working-directory: ${{ PROJECT_PATH_EXPRESS_SERVER }}
     steps:
     - uses: actions/checkout@v2
     - name: Express-Server build
       run: |
-        echo "COCOS"
+        echo $PROJECT_PATH_EXPRESS_SERVER
         echo $PWD
         pwd
 #        ./infra/build.sh
