@@ -32,9 +32,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Express-Server build
       run: |
-        bash echo "COCOS"
-#        echo $PWD
-#        pwd
+        echo "COCOS"
+        echo $PWD
+        pwd
 #        ./infra/build.sh
 #    - name: Express-Server run in docker container
 #      run: infra/run.sh
