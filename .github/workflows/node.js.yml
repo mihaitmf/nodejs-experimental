@@ -35,22 +35,11 @@ jobs:
   express-server-docker:
     name: Express-Server run in docker container
     runs-on: ubuntu-latest
-    needs: checkout
     defaults:
       run:
         working-directory: $PROJECT_PATH_EXPRESS_SERVER
     steps:
-    - name: Cache npm node_modules
-      id: npm-cache
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - name: Express-Server install
-      if: steps.npm-cache.outputs.cache-hit != 'true'
-      run: npm ci
+    - uses: actions/checkout@v2
     - name: Express-Server build
       run: infra/build.sh
     - name: Express-Server run in docker container
@@ -59,20 +48,26 @@ jobs:
       run: |
         curl -v "localhost:8080?hello=world&aaa=123"
         curl -d "name=john&age=29" -X POST -v localhost:8080
-    - name: Clean up docker and node_modules
+    - name: Clean up docker
       run: |
         docker rmi $(docker images -aq)
         docker rm -fv $(docker ps -aq)
-        rm -r node_modules
 
   express-server-npm:
     name: Express-Server run locally with npm
     runs-on: ubuntu-latest
-    needs: checkout
     defaults:
       run:
         working-directory: $PROJECT_PATH_EXPRESS_SERVER
+    strategy:
+      matrix:
+        node-version: [ 14.x, 10.x ]
     steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
     - name: Cache npm node_modules
       id: npm-cache
       uses: actions/cache@v2
@@ -96,11 +91,18 @@ jobs:
   http-server-node-from-system:
     name: Http-Server with Node from system
     runs-on: ubuntu-latest
-    needs: checkout
     defaults:
       run:
         working-directory: $PROJECT_PATH_HTTP_SERVER
+    strategy:
+      matrix:
+        node-version: [ 14.x, 10.x ]
     steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
     - name: Http-Server run with Node from system
       run: node http-server.js 3000
     - name: Http-Server test curl
@@ -111,11 +113,11 @@ jobs:
   http-server-node-from-docker:
     name: Http-Server with Node from docker
     runs-on: ubuntu-latest
-    needs: checkout
     defaults:
       run:
         working-directory: $PROJECT_PATH_HTTP_SERVER
     steps:
+    - uses: actions/checkout@v2
     - name: Http-Server run with Node from docker
       run: ../infra/docker/run-node.sh http-server.js http-server 3000
     - name: Http-Server test curl
@@ -126,11 +128,11 @@ jobs:
   http-server-nodemon-from-docker:
     name: Http-Server with Nodemon from docker
     runs-on: ubuntu-latest
-    needs: checkout
     defaults:
       run:
         working-directory: $PROJECT_PATH_HTTP_SERVER
     steps:
+    - uses: actions/checkout@v2
     - name: Http-Server run with Nodemon from docker
       run: ../infra/docker/run-nodemon.sh http-server.js http-server 3000
     - name: Http-Server test curl
@@ -141,12 +143,28 @@ jobs:
   promises:
     name: Promises
     runs-on: ubuntu-latest
-    needs: checkout
     defaults:
       run:
         working-directory: $PROJECT_PATH_PROMISES
+    strategy:
+      matrix:
+        node-version: [ 14.x, 10.x ]
     steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Cache npm node_modules
+      id: npm-cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
     - name: Promises install
+      if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm ci
     - name: Promises run with npm
       run: |
