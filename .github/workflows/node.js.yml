@@ -41,7 +41,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Express-Server build
-      run: infra/build.sh
+      run: |
+        pwd
+        infra/build.sh
     - name: Express-Server run in docker container
       run: infra/run.sh
     - name: Express-Server test curl
