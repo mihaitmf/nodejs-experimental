@@ -51,9 +51,9 @@ jobs:
     - name: Express-Server test curl
       run: |
         docker ps
-        echo "\n--------- TEST GET ---------\n"
-        curl -v "node-express-service:8080?hello=world&aaa=123"
-        echo "\n--------- TEST POST ---------\n"
+        printf "\n--------- TEST GET ---------\n"
+        curl -v "localhost:8080?hello=world&aaa=123"
+        printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
       run: |
@@ -89,16 +89,16 @@ jobs:
     - name: Express-Server run with npm
       run: |
         npm run start &
-        echo SERVER_PID=$! >> $GITHUB_ENV
+        printf SERVER_PID=$! >> $GITHUB_ENV
     - name: Express-Server test curl
       run: |
-        echo "\n--------- TEST GET ---------\n"
+        printf "\n--------- TEST GET ---------\n"
         curl -v "localhost:8080?hello=world&aaa=123"
-        echo "\n--------- TEST POST ---------\n"
+        printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up
       run: |
-        echo $SERVER_PID
+        printf "server PID to kill: $SERVER_PID"
         kill $SERVER_PID
         rm -r node_modules
 #
