@@ -51,9 +51,21 @@ jobs:
     - name: Express-Server test curl
       run: |
         docker ps
+
+        attempt_counter=0
+        max_attempts=5
+        until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
+            if [ ${attempt_counter} -eq ${max_attempts} ];then
+              echo "Max attempts reached"
+              exit 1
+            fi
+            printf '.'
+            attempt_counter=$(($attempt_counter+1))
+            sleep 5
+        done
+
         printf "\n--------- TEST GET ---------\n"
-        curl -v 127.0.0.1:8080
-        curl -v 127.0.0.1:8080/
+        curl -v http://127.0.0.1:8080/
         printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
