@@ -88,6 +88,9 @@ jobs:
       run: npm ci
     - name: Express-Server run with npm
       run: |
+        ls -lah .
+        ls -lah node_modules
+        ls -lah ~/.npm
         npm run start &
         printf SERVER_PID=$! >> $GITHUB_ENV
     - name: Express-Server test curl
