@@ -157,36 +157,32 @@ jobs:
         curl --silent -v "localhost:3000?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
         curl --silent -v -X POST -d "name=john&age=29" localhost:3000
-#
-#  promises:
-#    name: Promises
-#    runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: ${{ env.PROJECT_PATH_PROMISES }}
-#    strategy:
-#      matrix:
-#        node-version: [ 14.x, 10.x ]
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Use Node.js ${{ matrix.node-version }}
-#      uses: actions/setup-node@v1
-#      with:
-#        node-version: ${{ matrix.node-version }}
-#    - name: Cache npm node_modules
-#      id: npm-cache
-#      uses: actions/cache@v2
-#      with:
-#        path: promises/node_modules
-#        key: ${{ runner.os }}-node-${{ hashFiles('**/promises/package-lock.json') }}
-#        restore-keys: |
-#          ${{ runner.os }}-node-
-#    - name: Promises install
-#      if: steps.npm-cache.outputs.cache-hit != 'true'
-#      run: npm ci
-#    - name: Promises run with npm
-#      run: |
-#        npm run start
-#        npm run github-user-details
-#    - name: Clean up node_modules
-#      run: rm -r node_modules
+
+  promises:
+    name: Promises
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_PATH_PROMISES }}
+    strategy:
+      matrix:
+        node-version: [ 14.x, 10.x ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Cache npm node_modules
+      id: npm-cache
+      uses: actions/cache@v2
+      with:
+        path: promises/node_modules
+        key: ${{ runner.os }}-node-promises-${{ hashFiles('**/promises/package-lock.json') }}
+    - name: Promises install
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: npm ci
+    - name: Promises run with npm
+      run: |
+        npm run start
+        npm run github-user-details
