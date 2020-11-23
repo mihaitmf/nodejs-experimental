@@ -51,9 +51,8 @@ jobs:
     - name: Express-Server test curl
       run: |
         docker ps
-        docker inspect node-express-service
         printf "\n--------- TEST GET ---------\n"
-        curl -v localhost:8080/
+        curl -v 127.0.0.1:8080/
         printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
