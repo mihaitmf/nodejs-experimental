@@ -46,9 +46,6 @@ jobs:
       run: |
         infra/build.sh
         docker save --output docker-image.tar mihaitmf/node-express-service:latest
-        pwd
-        ls -lah ../
-        ls -lah .
     - name: Express-Server run in docker container
       run: infra/run.sh
     - name: Express-Server test curl
@@ -62,14 +59,13 @@ jobs:
             echo "Max attempts reached"
             exit 1
           fi
-          printf 'Waiting for web server to be up...'
-          attempt_counter=$(($attempt_counter+1))
-          printf $attempt_counter
+          attempt_counter=$((attempt_counter+1))
+          printf "Waiting for web server to be up. Sleep $attempt_counter seconds..."
           sleep $attempt_counter
         done
 
         printf "\n--------- TEST GET ---------\n"
-        curl -v "http://localhost:8080/?hello=world&aaa=123"
+        curl -v "localhost:8080?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
