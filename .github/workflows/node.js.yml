@@ -63,9 +63,9 @@ jobs:
         done
 
         printf "\n--------- TEST GET ---------\n"
-        curl "localhost:8080?hello=world&aaa=123"
+        curl --silent -v "localhost:8080?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
-        curl -d "name=john&age=29" -X POST localhost:8080
+        curl --silent -v -X POST -d "name=john&age=29" localhost:8080
     - name: Clean up docker
       run: |
         docker rm -fv node-express-service
