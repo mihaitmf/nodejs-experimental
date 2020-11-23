@@ -46,24 +46,26 @@ jobs:
       run: |
         infra/build.sh
         docker save --output docker-image.tar mihaitmf/node-express-service:latest
+        pwd
         ls -lah ../
+        ls -lah .
     - name: Express-Server run in docker container
       run: infra/run.sh
     - name: Express-Server test curl
       run: |
         docker ps
 
-        attempt_counter=0
-        max_attempts=5
-        until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
-            if [ ${attempt_counter} -eq ${max_attempts} ];then
-              echo "Max attempts reached"
-              exit 1
-            fi
-            printf '.'
-            attempt_counter=$(($attempt_counter+1))
-            sleep 5
-        done
+#        attempt_counter=0
+#        max_attempts=5
+#        until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
+#            if [ ${attempt_counter} -eq ${max_attempts} ];then
+#              echo "Max attempts reached"
+#              exit 1
+#            fi
+#            printf '.'
+#            attempt_counter=$(($attempt_counter+1))
+#            sleep 5
+#        done
 
         printf "\n--------- TEST GET ---------\n"
         curl -v "http://localhost:8080/?hello=world&aaa=123"
@@ -71,8 +73,8 @@ jobs:
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
       run: |
-        docker rmi mihaitmf/node-express-service:latest
         docker rm -fv node-express-service
+        docker rmi mihaitmf/node-express-service:latest
 
 #  express-server-npm:
 #    name: Express-Server run locally with npm
