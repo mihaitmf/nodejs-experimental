@@ -35,7 +35,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: docker-image.tar
-        key: ${{ runner.os }}-node-${{ hashFiles('*') }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/env.PROJECT_PATH_EXPRESS_SERVER/**') }}
         restore-keys: |
           ${{ runner.os }}-node-
     - name: Express-Server load docker image from cache
