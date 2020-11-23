@@ -139,20 +139,22 @@ jobs:
         curl --silent -v "localhost:3000?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
         curl --silent -v -X POST -d "name=john&age=29" localhost:3000
-#
-#  http-server-nodemon-from-docker:
-#    name: Http-Server with Nodemon from docker
-#    runs-on: ubuntu-latest
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Http-Server run with Nodemon from docker
-#      run: infra/docker/run-nodemon.sh http-server.js http-server 3000
-#    - name: Http-Server test curl
-#      run: |
-#        printf "\n--------- TEST GET ---------\n"
-#        curl -v "localhost:3000?hello=world&aaa=123"
-#        printf "\n--------- TEST POST ---------\n"
-#        curl -v -X POST -d "name=john&age=29" localhost:3000
+
+  http-server-nodemon-from-docker:
+    name: Http-Server with Nodemon from docker
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Nodemon image
+      run: infra/docker/nodemon/build.sh
+    - name: Http-Server run with Nodemon from docker
+      run: infra/docker/run-nodemon.sh http-server.js http-server 3000 &
+    - name: Http-Server test curl
+      run: |
+        printf "\n--------- TEST GET ---------\n"
+        curl --silent -v "localhost:3000?hello=world&aaa=123"
+        printf "\n--------- TEST POST ---------\n"
+        curl --silent -v -X POST -d "name=john&age=29" localhost:3000
 #
 #  promises:
 #    name: Promises
