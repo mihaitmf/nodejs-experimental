@@ -25,9 +25,9 @@ jobs:
   express-server-docker:
     name: Express-Server run in docker container
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
+#    defaults:
+#      run:
+#        working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
     steps:
     - uses: actions/checkout@v2
     - name: Cache docker build
@@ -53,57 +53,57 @@ jobs:
         docker ps
         docker inspect node-express-service
         printf "\n--------- TEST GET ---------\n"
-        curl -v 127.0.0.1:8080
+        curl -v localhost:8080/
         printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
       run: |
-        docker rmi $(docker images -aq)
-        docker rm -fv $(docker ps -aq)
+        docker rmi mihaitmf/node-express-service:latest
+        docker rm -fv node-express-service
 
-  express-server-npm:
-    name: Express-Server run locally with npm
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
-    strategy:
-      matrix:
-        node-version: [ 14.x, 10.x ]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Cache npm node_modules
-      id: npm-cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - name: Express-Server install
-      if: steps.npm-cache.outputs.cache-hit != 'true'
-      run: npm ci
-    - name: Express-Server run with npm
-      run: |
-        echo $PWD
-        ls -lah .
-        npm run start &
-        printf SERVER_PID=$! >> $GITHUB_ENV
-    - name: Express-Server test curl
-      run: |
-        printf "\n--------- TEST GET ---------\n"
-        curl -v "localhost:8080?hello=world&aaa=123"
-        printf "\n--------- TEST POST ---------\n"
-        curl -d "name=john&age=29" -X POST -v localhost:8080
-    - name: Clean up
-      run: |
-        printf "server PID to kill: $SERVER_PID"
-        kill $SERVER_PID
-        rm -r node_modules
+#  express-server-npm:
+#    name: Express-Server run locally with npm
+#    runs-on: ubuntu-latest
+#    defaults:
+#      run:
+#        working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
+#    strategy:
+#      matrix:
+#        node-version: [ 14.x, 10.x ]
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Use Node.js ${{ matrix.node-version }}
+#      uses: actions/setup-node@v1
+#      with:
+#        node-version: ${{ matrix.node-version }}
+#    - name: Cache npm node_modules
+#      id: npm-cache
+#      uses: actions/cache@v2
+#      with:
+#        path: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}/node_modules
+#        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#        restore-keys: |
+#          ${{ runner.os }}-node-
+#    - name: Express-Server install
+#      if: steps.npm-cache.outputs.cache-hit != 'true'
+#      run: npm ci
+#    - name: Express-Server run with npm
+#      run: |
+#        echo $PWD
+#        ls -lah .
+#        npm run start &
+#        printf SERVER_PID=$! >> $GITHUB_ENV
+#    - name: Express-Server test curl
+#      run: |
+#        printf "\n--------- TEST GET ---------\n"
+#        curl -v "localhost:8080?hello=world&aaa=123"
+#        printf "\n--------- TEST POST ---------\n"
+#        curl -d "name=john&age=29" -X POST -v localhost:8080
+#    - name: Clean up
+#      run: |
+#        printf "server PID to kill: $SERVER_PID"
+#        kill $SERVER_PID
+#        rm -r node_modules
 #
 #  http-server-node-from-system:
 #    name: Http-Server with Node from system
