@@ -37,7 +37,7 @@ jobs:
         HASH_FILES: hashFiles('**/${{ env.PROJECT_PATH_EXPRESS_SERVER }}/**')
       with:
         path: docker-image.tar
-        key: ${{ runner.os }}-node-${{ env.HASH_FILES }}
+        key: ${{ runner.os }}-node-${{ ${{ env.HASH_FILES }} }}
         restore-keys: |
           ${{ runner.os }}-node-
     - name: Express-Server load docker image from cache
@@ -55,7 +55,7 @@ jobs:
         docker ps
         docker inspect node-express-service
         printf "\n--------- TEST GET ---------\n"
-        curl -v "127.0.0.1:8080/?hello=world&aaa=123"
+        curl -v 127.0.0.1:8080
         printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
@@ -91,6 +91,8 @@ jobs:
       run: npm ci
     - name: Express-Server run with npm
       run: |
+        echo $PWD
+        ls -lah .
         npm run start &
         printf SERVER_PID=$! >> $GITHUB_ENV
     - name: Express-Server test curl
