@@ -35,10 +35,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: docker-image.tar
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/*') }}
         restore-keys: |
           ${{ runner.os }}-node-
-    - name: Express-Server build
+    - name: Express-Server load docker image from cache
+      if: steps.docker-cache.outputs.cache-hit == 'true'
+      run: docker load --input docker-image.tar
+    - name: Express-Server build docker image
       if: steps.docker-cache.outputs.cache-hit != 'true'
       run: |
         infra/build.sh
@@ -49,9 +52,9 @@ jobs:
       run: |
         docker ps
         echo "\n--------- TEST GET ---------\n"
-        curl -v "0.0.0.0:8080?hello=world&aaa=123"
+        curl -v "node-express-service:8080?hello=world&aaa=123"
         echo "\n--------- TEST POST ---------\n"
-        curl -d "name=john&age=29" -X POST -v node-express-service:8080
+        curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
       run: |
         docker rmi $(docker images -aq)
