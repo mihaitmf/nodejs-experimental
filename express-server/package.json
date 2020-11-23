@@ -1,7 +1,7 @@
 {
   "name": "node-express-server",
   "version": "1.0.0",
-  "description": "Simple Node.js Express web server on Docker",
+  "description": "Simple Node.js Express web server running on Docker",
   "author": "Mihai Tmf <mihai.tmf@gmail.com>",
   "homepage": "https://github.com/mihaitmf/nodejs-experimental#readme",
   "license": "GPL-3.0-only",
