@@ -132,7 +132,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Http-Server run with Node from docker
-      run: infra/docker/run-node.sh http-server.js http-server 3000 &
+      run: infra/docker/run-node.sh ${{ env.PROJECT_PATH_HTTP_SERVER }}/http-server.js http-server 3000 &
     - name: Http-Server test curl
       run: |
         sleep 2
@@ -149,7 +149,7 @@ jobs:
     - name: Build Nodemon image
       run: infra/docker/nodemon/build.sh
     - name: Http-Server run with Nodemon from docker
-      run: infra/docker/run-nodemon.sh http-server.js http-server 3000 &
+      run: infra/docker/run-nodemon.sh ${{ env.PROJECT_PATH_HTTP_SERVER }}/http-server.js http-server 3000 &
     - name: Http-Server test curl
       run: |
         sleep 2
