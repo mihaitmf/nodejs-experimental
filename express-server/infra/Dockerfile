@@ -16,4 +16,7 @@ RUN npm ci
 COPY . .
 
 EXPOSE 8080
+
+HEALTHCHECK --interval=5s --timeout=2s --retries=5 CMD ["healthcheck.sh"]
+
 CMD [ "npm", "start" ]
