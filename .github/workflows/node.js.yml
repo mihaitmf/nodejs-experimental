@@ -35,7 +35,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: docker-image.tar
-        key: ${{ runner.os }}-node-${{ hashFiles('**/env.PROJECT_PATH_EXPRESS_SERVER/**') }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/${{ env.PROJECT_PATH_EXPRESS_SERVER }}/**') }}
         restore-keys: |
           ${{ runner.os }}-node-
     - name: Express-Server load docker image from cache
@@ -51,6 +51,7 @@ jobs:
     - name: Express-Server test curl
       run: |
         docker ps
+        docker inspect node-express-service
         printf "\n--------- TEST GET ---------\n"
         curl -v "localhost:8080?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
@@ -79,7 +80,7 @@ jobs:
       id: npm-cache
       uses: actions/cache@v2
       with:
-        path: node_modules
+        path: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}/node_modules
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
