@@ -33,13 +33,11 @@ jobs:
     - name: Cache docker build
       id: docker-cache
       uses: actions/cache@v2
-      env:
-        HASH_FILES: hashFiles('**/${{ env.PROJECT_PATH_EXPRESS_SERVER }}/**')
       with:
         path: docker-image.tar
-        key: ${{ runner.os }}-node-${{ ${{ env.HASH_FILES }} }}
+        key: ${{ runner.os }}-node-express-server-${{ github.workspace }}-${{ hashFiles('**/express-server/**') }} }}
         restore-keys: |
-          ${{ runner.os }}-node-
+          ${{ runner.os }}-node-express-server-
     - name: Express-Server load docker image from cache
       if: steps.docker-cache.outputs.cache-hit == 'true'
       run: docker load --input docker-image.tar
