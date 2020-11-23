@@ -9,50 +9,33 @@ env:
   - PROJECT_PATH_PROMISES=promises
 
 stages:
-  - express-server install
-  - express-server build
-  - express-server run container
-  - express-server test
-  - clean up docker
-  - express-server run npm
-  - express-server test
-  - http-server run
-  - http-server test
-  - promises install
-  - promises test
-  - clean up node modules
+  - Express-Server run in docker container
 
 jobs:
   include:
-    - stage: express-server install
-      script: npm --prefix $PROJECT_PATH_EXPRESS_SERVER ci $PROJECT_PATH_EXPRESS_SERVER
-    - stage: express-server build
-      script: $PROJECT_PATH_EXPRESS_SERVER/infra/build.sh
-    - stage: express-server run container
-      script: $PROJECT_PATH_EXPRESS_SERVER/infra/run.sh
-    - stage: express-server test
+    - stage: Express-Server run in docker container
+      name: Express-Server build docker image
       script:
-        - curl -v "localhost:8080?hello=world&aaa=123"
-        - curl -v -X POST -d "name=john&age=29" localhost:8080
-    - stage: express-server run npm
-      script: npm --prefix $PROJECT_PATH_EXPRESS_SERVER run start
-    - stage: http-server run
-      script: infra/docker/run-node.sh $PROJECT_PATH_HTTP_SERVER/http-server.js http-server 3000
-    - stage: http-server test
+        - cd $PROJECT_PATH_EXPRESS_SERVER
+        - infra/build.sh
+    - name: Express-Server run in docker container
+      script: infra/run.sh
+    - name: Express-Server test curl
       script:
-        - curl -v "localhost:3000?hello=world&aaa=123"
-        - curl -v -X POST -d "name=john&age=29" localhost:3000
-    - stage: promises install
-      script: npm --prefix $PROJECT_PATH_PROMISES ci $PROJECT_PATH_PROMISES
-    - stage: promises test
-      script:
-        - npm --prefix $PROJECT_PATH_PROMISES run start
-        - npm --prefix $PROJECT_PATH_PROMISES run github-user-details
-    - stage: clean up docker
-      script:
-        - docker rmi $(docker images -aq)
-        - docker rm -fv $(docker ps -aq)
-    - stage: clean up node modules
-      script:
-        - rm -r $PROJECT_PATH_EXPRESS_SERVER/node_modules
-        - rm -r $PROJECT_PATH_EXPRESS_PROMISES/node_modules
+        - docker ps
+
+          attempt_counter=0
+          max_attempts=5
+          until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
+            if [ ${attempt_counter} -eq ${max_attempts} ]; then
+            echo "Max attempts reached"
+            exit 1
+          fi
+          attempt_counter=$((attempt_counter+1))
+          printf "Waiting for web server to be up. Sleep $attempt_counter seconds..."
+          sleep $attempt_counter
+          done
+          printf "\n--------- TEST GET ---------\n"
+          curl --silent -v "localhost:8080?hello=world&aaa=123"
+          printf "\n--------- TEST POST ---------\n"
+          curl --silent -v -X POST -d "name=john&age=29" localhost:8080
