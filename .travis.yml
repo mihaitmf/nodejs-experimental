@@ -13,12 +13,11 @@ stages:
 
 jobs:
   include:
-    - before_script: cd $PROJECT_PATH_EXPRESS_SERVER
     - stage: Express-Server run in docker container
       name: Express-Server build docker image
-      script: infra/build.sh
+      script: $PROJECT_PATH_EXPRESS_SERVER/infra/build.sh
     - name: Express-Server run docker container
-      script: infra/run.sh
+      script: $PROJECT_PATH_EXPRESS_SERVER/infra/run.sh
     - name: Express-Server test curl
       script:
         - docker ps
