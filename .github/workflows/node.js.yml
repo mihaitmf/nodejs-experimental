@@ -35,7 +35,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: docker-image.tar
-        key: ${{ runner.os }}-node-${{ hashFiles('**/*') }}
+        key: ${{ runner.os }}-node-${{ hashFiles('*') }}
         restore-keys: |
           ${{ runner.os }}-node-
     - name: Express-Server load docker image from cache
@@ -79,7 +79,7 @@ jobs:
       id: npm-cache
       uses: actions/cache@v2
       with:
-        path: ~/.npm
+        path: node_modules
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
@@ -88,9 +88,6 @@ jobs:
       run: npm ci
     - name: Express-Server run with npm
       run: |
-        ls -lah .
-        ls -lah node_modules
-        ls -lah ~/.npm
         npm run start &
         printf SERVER_PID=$! >> $GITHUB_ENV
     - name: Express-Server test curl
@@ -176,7 +173,7 @@ jobs:
 #      id: npm-cache
 #      uses: actions/cache@v2
 #      with:
-#        path: ~/.npm
+#        path: node_modules
 #        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 #        restore-keys: |
 #          ${{ runner.os }}-node-
