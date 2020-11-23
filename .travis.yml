@@ -13,15 +13,13 @@ stages:
 
 jobs:
   include:
-    - stage: Express-Server run in docker container
-      name: Express-Server build docker image
+    - stage: Express-Server build docker image
       script: $PROJECT_PATH_EXPRESS_SERVER/infra/build.sh
-    - name: Express-Server run docker container
+    - stage: Express-Server run docker container
       script: $PROJECT_PATH_EXPRESS_SERVER/infra/run.sh
-    - name: Express-Server test curl
+    - stage: Express-Server test curl
       script:
         - docker ps
-
           attempt_counter=0
           max_attempts=5
           until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
