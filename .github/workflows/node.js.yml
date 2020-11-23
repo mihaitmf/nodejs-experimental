@@ -21,7 +21,6 @@ env:
   PROJECT_PATH_HTTP_SERVER: http-server
   PROJECT_PATH_PROMISES: promises
   EXPRESS_SERVER_IMAGE_NAME: mihaitmf/node-express-service:latest
-  EXPRESS_SERVER_CONTAINER_NAME: node-express-service
 
 jobs:
   express-server-docker:
@@ -67,10 +66,6 @@ jobs:
         curl --silent -v "localhost:8080?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
         curl --silent -v -X POST -d "name=john&age=29" localhost:8080
-    - name: Clean up docker
-      run: |
-        docker rm -fv ${{ env.EXPRESS_SERVER_CONTAINER_NAME }}
-        docker rmi ${{ env.EXPRESS_SERVER_IMAGE_NAME }}
 
   express-server-npm:
     name: Express-Server run locally with npm
@@ -117,34 +112,31 @@ jobs:
         curl --silent -v "localhost:8080?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
         curl --silent -v -X POST -d "name=john&age=29" localhost:8080
-    - name: Clean up
-      run: |
-        printf "server PID to kill: $SERVER_PID"
-        kill $SERVER_PID
-        rm -r node_modules
 
-#  http-server-node-from-system:
-#    name: Http-Server with Node from system
-#    runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: ${{ env.PROJECT_PATH_HTTP_SERVER }}
-#    strategy:
-#      matrix:
-#        node-version: [ 14.x, 10.x ]
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Use Node.js ${{ matrix.node-version }}
-#      uses: actions/setup-node@v1
-#      with:
-#        node-version: ${{ matrix.node-version }}
-#    - name: Http-Server run with Node from system
-#      run: node http-server.js 3000
-#    - name: Http-Server test curl
-#      run: |
-#        curl -v "localhost:3000?hello=world&aaa=123"
-#        curl -v -X POST -d "name=john&age=29" localhost:3000
-#
+  http-server-node-from-system:
+    name: Http-Server with Node from system
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_PATH_HTTP_SERVER }}
+    strategy:
+      matrix:
+        node-version: [ 14.x, 10.x ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Http-Server run with Node from system
+      run: node http-server.js 3000
+    - name: Http-Server test curl
+      run: |
+        printf "\n--------- TEST GET ---------\n"
+        curl -v "localhost:3000?hello=world&aaa=123"
+        printf "\n--------- TEST POST ---------\n"
+        curl -v -X POST -d "name=john&age=29" localhost:3000
+
 #  http-server-node-from-docker:
 #    name: Http-Server with Node from docker
 #    runs-on: ubuntu-latest
