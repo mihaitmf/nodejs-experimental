@@ -152,7 +152,6 @@ jobs:
       run: infra/docker/run-nodemon.sh ${{ env.PROJECT_PATH_HTTP_SERVER }}/http-server.js http-server 3000 &
     - name: Http-Server test curl
       run: |
-        sleep 2
         printf "\n--------- TEST GET ---------\n"
         curl --silent -v "localhost:3000?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
