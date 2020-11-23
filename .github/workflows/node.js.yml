@@ -36,8 +36,6 @@ jobs:
       with:
         path: express-server/docker-image.tar
         key: ${{ runner.os }}-node-express-server-${{ hashFiles('**/express-server/**') }}
-        restore-keys: |
-          ${{ runner.os }}-node-express-server-
     - name: Express-Server load docker image from cache
       if: steps.docker-cache.outputs.cache-hit == 'true'
       run: docker load --input docker-image.tar
@@ -103,7 +101,7 @@ jobs:
 #      run: |
 #        echo $PWD
 #        ls -lah .
-#        npm run start &
+#        npm run start > /dev/null 2>&1 &
 #        printf SERVER_PID=$! >> $GITHUB_ENV
 #    - name: Express-Server test curl
 #      run: |
