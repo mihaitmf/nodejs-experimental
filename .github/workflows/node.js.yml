@@ -118,27 +118,27 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Http-Server run with Node from system
-      run: node http-server.js 3000
+      run: node http-server.js 3000 &
     - name: Http-Server test curl
       run: |
         printf "\n--------- TEST GET ---------\n"
         curl -v "localhost:3000?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
         curl -v -X POST -d "name=john&age=29" localhost:3000
-#
-#  http-server-node-from-docker:
-#    name: Http-Server with Node from docker
-#    runs-on: ubuntu-latest
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Http-Server run with Node from docker
-#      run: infra/docker/run-node.sh http-server.js http-server 3000
-#    - name: Http-Server test curl
-#      run: |
-#        printf "\n--------- TEST GET ---------\n"
-#        curl -v "localhost:3000?hello=world&aaa=123"
-#        printf "\n--------- TEST POST ---------\n"
-#        curl -v -X POST -d "name=john&age=29" localhost:3000
+
+  http-server-node-from-docker:
+    name: Http-Server with Node from docker
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Http-Server run with Node from docker
+      run: infra/docker/run-node.sh http-server.js http-server 3000 &
+    - name: Http-Server test curl
+      run: |
+        printf "\n--------- TEST GET ---------\n"
+        curl -v "localhost:3000?hello=world&aaa=123"
+        printf "\n--------- TEST POST ---------\n"
+        curl -v -X POST -d "name=john&age=29" localhost:3000
 #
 #  http-server-nodemon-from-docker:
 #    name: Http-Server with Nodemon from docker
