@@ -35,7 +35,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: docker-image.tar
-        key: ${{ runner.os }}-node-express-server-${{ hashFiles('**/express-server/**') }} }}
+        key: ${{ runner.os }}-node-express-server-${{ hashFiles('**/express-server/**') }}
         restore-keys: |
           ${{ runner.os }}-node-express-server-
     - name: Express-Server load docker image from cache
@@ -52,6 +52,7 @@ jobs:
       run: |
         docker ps
         printf "\n--------- TEST GET ---------\n"
+        curl -v 127.0.0.1:8080
         curl -v 127.0.0.1:8080/
         printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
