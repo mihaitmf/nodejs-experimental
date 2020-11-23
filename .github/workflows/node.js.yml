@@ -34,7 +34,7 @@ jobs:
       id: docker-cache
       uses: actions/cache@v2
       env:
-        HASH_FILES: hashFiles("**/${{ env.PROJECT_PATH_EXPRESS_SERVER }}/**")
+        HASH_FILES: hashFiles('**/${{ env.PROJECT_PATH_EXPRESS_SERVER }}/**')
       with:
         path: docker-image.tar
         key: ${{ runner.os }}-node-${{ env.HASH_FILES }}
