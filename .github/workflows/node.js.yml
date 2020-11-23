@@ -45,7 +45,7 @@ jobs:
       if: steps.docker-cache.outputs.cache-hit != 'true'
       run: |
         infra/build.sh
-        docker save --output docker-image.tar ${{ EXPRESS_SERVER_IMAGE_NAME }}
+        docker save --output docker-image.tar ${{ env.EXPRESS_SERVER_IMAGE_NAME }}
     - name: Express-Server run in docker container
       run: infra/run.sh
     - name: Express-Server test curl
@@ -70,8 +70,8 @@ jobs:
         curl --silent -v -X POST -d "name=john&age=29" localhost:8080
     - name: Clean up docker
       run: |
-        docker rm -fv ${{ EXPRESS_SERVER_CONTAINER_NAME }}
-        docker rmi ${{ EXPRESS_SERVER_IMAGE_NAME }}
+        docker rm -fv ${{ env.EXPRESS_SERVER_CONTAINER_NAME }}
+        docker rmi ${{ env.EXPRESS_SERVER_IMAGE_NAME }}
 
   express-server-npm:
     name: Express-Server run locally with npm
