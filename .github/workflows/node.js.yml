@@ -25,9 +25,9 @@ jobs:
   express-server-docker:
     name: Express-Server run in docker container
     runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}
     steps:
     - uses: actions/checkout@v2
     - name: Cache docker build
@@ -35,7 +35,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: docker-image.tar
-        key: ${{ runner.os }}-node-express-server-${{ github.workspace }}-${{ hashFiles('**/express-server/**') }} }}
+        key: ${{ runner.os }}-node-express-server-${{ hashFiles('**/express-server/**') }} }}
         restore-keys: |
           ${{ runner.os }}-node-express-server-
     - name: Express-Server load docker image from cache
