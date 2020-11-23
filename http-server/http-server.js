@@ -51,6 +51,6 @@ server.listen(port, hostname, () => {
 
 /**
  * Test from exterior with:
- * curl -d "name=john&age=29" -X POST -v 192.168.29.11:3000
+ * curl -v -X POST -d "name=john&age=29" 192.168.29.11:3000
  * curl -v "192.168.29.11:8080?hello=world&aaa=123"
  */

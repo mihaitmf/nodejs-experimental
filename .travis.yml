@@ -33,7 +33,7 @@ jobs:
     - stage: express-server test
       script:
         - curl -v "localhost:8080?hello=world&aaa=123"
-        - curl -d "name=john&age=29" -X POST -v localhost:8080
+        - curl -v -X POST -d "name=john&age=29" localhost:8080
     - stage: express-server run npm
       script: npm --prefix $PROJECT_PATH_EXPRESS_SERVER run start
     - stage: http-server run
@@ -41,7 +41,7 @@ jobs:
     - stage: http-server test
       script:
         - curl -v "localhost:3000?hello=world&aaa=123"
-        - curl -d "name=john&age=29" -X POST -v localhost:3000
+        - curl -v -X POST -d "name=john&age=29" localhost:3000
     - stage: promises install
       script: npm --prefix $PROJECT_PATH_PROMISES ci $PROJECT_PATH_PROMISES
     - stage: promises test

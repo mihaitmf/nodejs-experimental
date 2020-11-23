@@ -35,11 +35,11 @@ Run with nodemon:
 
 To test the server running locally:
 - `curl -v "localhost:8080?hello=world&aaa=123"`
-- `curl -d "name=john&age=29" -X POST -v localhost:8080`
+- `curl -v -X POST -d "name=john&age=29" localhost:8080`
 
 To test the server running inside the vagrant machine:
 - `curl -v "192.168.29.11:8080?hello=world&aaa=123"`
-- `curl -d "name=john&age=29" -X POST -v 192.168.29.11:8080` 
+- `curl -v -X POST -d "name=john&age=29" 192.168.29.11:8080` 
 
 ## Node web server using just "http" module
 Path to app: `<project-root>/http-server/`
@@ -52,4 +52,4 @@ Run with nodemon:
 
 To test the server from outside of the vagrant machine:
 - `curl -v "192.168.29.11:3000?hello=world&aaa=123"`
-- `curl -d "name=john&age=29" -X POST -v 192.168.29.11:3000` 
+- `curl -v -X POST -d "name=john&age=29" 192.168.29.11:3000` 
