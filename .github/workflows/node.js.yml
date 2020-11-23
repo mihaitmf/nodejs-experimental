@@ -133,8 +133,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Http-Server run with Node from docker
       run: |
-        ls -lah .
-        ls -lah ${{ env.PROJECT_PATH_HTTP_SERVER }}
         infra/docker/run-node.sh -v
         infra/docker/run-node.sh ${{ env.PROJECT_PATH_HTTP_SERVER }}/http-server.js http-server 3000 &
     - name: Http-Server test curl
