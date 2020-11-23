@@ -34,7 +34,7 @@ jobs:
       id: docker-cache
       uses: actions/cache@v2
       with:
-        path: docker-image.tar
+        path: ${{ env.PROJECT_PATH_EXPRESS_SERVER }}/docker-image.tar
         key: ${{ runner.os }}-node-express-server-${{ hashFiles('**/express-server/**') }}
         restore-keys: |
           ${{ runner.os }}-node-express-server-
@@ -46,6 +46,7 @@ jobs:
       run: |
         infra/build.sh
         docker save --output docker-image.tar mihaitmf/node-express-service:latest
+        ls -lah ../
     - name: Express-Server run in docker container
       run: infra/run.sh
     - name: Express-Server test curl
@@ -65,7 +66,7 @@ jobs:
         done
 
         printf "\n--------- TEST GET ---------\n"
-        curl -v http://127.0.0.1:8080/
+        curl -v "http://localhost:8080/?hello=world&aaa=123"
         printf "\n--------- TEST POST ---------\n"
         curl -d "name=john&age=29" -X POST -v localhost:8080
     - name: Clean up docker
