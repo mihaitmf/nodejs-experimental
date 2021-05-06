@@ -13,7 +13,8 @@ stages:
 
 jobs:
   include:
-    - stage: Express-Server build docker image
+    - stage: Express-Server run in docker container
+      name: Express-Server build docker image
       script: $PROJECT_PATH_EXPRESS_SERVER/infra/build.sh
     - stage: Express-Server run docker container
       script: $PROJECT_PATH_EXPRESS_SERVER/infra/run.sh
